@@ -505,6 +505,15 @@ async def admin_change_password(data: PasswordChange, auth: bool = Depends(verif
     
     if len(data.new_password) < 6:
         raise HTTPException(status_code=400, detail="Yeni şifre en az 6 karakter olmalı")
+
+    # Şifre her istekte HTTP başlığında (X-Admin-Password) gönderildiği için
+    # sadece standart İngilizce harf, rakam ve sembollere izin veriyoruz.
+    # Türkçe karakter içeren şifreler tarayıcıda başlığa eklenemiyor.
+    if not re.fullmatch(r"[\x21-\x7E]+", data.new_password):
+        raise HTTPException(
+            status_code=400,
+            detail="Şifrede Türkçe karakter (ç, ğ, ı, İ, ö, ş, ü) ve boşluk kullanılamaz"
+        )
     
     new_hash = pwd_context.hash(data.new_password)
     await db.admin_settings.update_one(

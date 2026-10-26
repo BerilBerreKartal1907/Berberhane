@@ -496,6 +496,14 @@ const AdminPage = () => {
       toast.error("Yeni şifre en az 6 karakter olmalı");
       return;
     }
+    // Şifre her istekte HTTP başlığında gönderildiği için sadece standart
+    // İngilizce harf, rakam ve sembollere izin veriyoruz (Türkçe karakter ve boşluk yok)
+    if (!/^[\x21-\x7E]+$/.test(newPassword)) {
+      toast.error(
+        "Şifrede Türkçe karakter (ç, ğ, ı, İ, ö, ş, ü) ve boşluk kullanılamaz. İngilizce harf, rakam ve sembol kullanın."
+      );
+      return;
+    }
 
     try {
       await adminChangePassword(storedPassword, currentPassword, newPassword);
@@ -1332,7 +1340,7 @@ const AdminPage = () => {
                 type="password"
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
-                placeholder="En az 6 karakter"
+                placeholder="En az 6 karakter, Türkçe harf yok"
                 className="bg-[#0A0A0A] border-[#262626]"
                 data-testid="new-password-input"
               />
