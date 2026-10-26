@@ -11,6 +11,8 @@ import {
   CheckCircle,
   ArrowLeft,
   ArrowRight,
+  Phone,
+  WhatsappLogo,
 } from "@phosphor-icons/react";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -19,6 +21,11 @@ import { Calendar } from "@/components/ui/calendar";
 import { toast } from "sonner";
 import { useBooking } from "@/context/BookingContext";
 import { getAvailableSlots, createAppointment, getSettings } from "@/lib/api";
+
+// Online randevu açık mı? Tanımlı değilse açık kabul edilir.
+// Yayına hazır olana kadar Cloudflare'de REACT_APP_BOOKING_ENABLED=false yapılır.
+const BOOKING_ENABLED =
+  (process.env.REACT_APP_BOOKING_ENABLED || "true").trim().toLowerCase() !== "false";
 
 const STEPS = [
   { id: 1, title: "Hizmet Seç", icon: Scissors },
@@ -44,8 +51,9 @@ const BookingModal = ({ services }) => {
   const [bookingComplete, setBookingComplete] = useState(false);
   const [completedAppointment, setCompletedAppointment] = useState(null);
   const [closedWeekdays, setClosedWeekdays] = useState([]);
+  const [contactInfo, setContactInfo] = useState({ phone: "", whatsapp: "" });
 
-  // İşletme ayarlarını çek (kapalı günleri takvimde engellemek için)
+  // İşletme ayarlarını çek (kapalı günleri takvimde engellemek ve iletişim bilgisi için)
   useEffect(() => {
     if (isBookingOpen) {
       getSettings()
@@ -55,6 +63,10 @@ const BookingModal = ({ services }) => {
             .filter((h) => !h.is_open)
             .map((h) => (h.day + 1) % 7);
           setClosedWeekdays(closed);
+          setContactInfo({
+            phone: data.phone || "",
+            whatsapp: data.whatsapp || "",
+          });
         })
         .catch(() => {});
     }
@@ -83,7 +95,7 @@ const BookingModal = ({ services }) => {
 
   // Fetch available slots when date changes
   useEffect(() => {
-    if (selectedDate && selectedService) {
+    if (BOOKING_ENABLED && selectedDate && selectedService) {
       fetchSlots();
     }
   }, [selectedDate, selectedService]);
@@ -188,6 +200,10 @@ const BookingModal = ({ services }) => {
     return false;
   };
 
+  const phoneHref = contactInfo.phone ? `tel:${contactInfo.phone.replace(/\s/g, "")}` : null;
+  const whatsappDigits = contactInfo.whatsapp.replace(/\D/g, "");
+  const whatsappHref = whatsappDigits ? `https://wa.me/${whatsappDigits}` : null;
+
   return (
     <Dialog open={isBookingOpen} onOpenChange={closeBooking}>
       <DialogContent
@@ -205,7 +221,7 @@ const BookingModal = ({ services }) => {
           </div>
 
           {/* Step Indicators */}
-          {!bookingComplete && (
+          {BOOKING_ENABLED && !bookingComplete && (
             <div className="flex justify-center gap-2 mt-4">
               {STEPS.slice(0, 4).map((s) => (
                 <div
@@ -223,7 +239,60 @@ const BookingModal = ({ services }) => {
           )}
         </div>
 
+        {/* Online randevu kapalıyken: "yakında" mesajı ve iletişim butonları */}
+        {!BOOKING_ENABLED && (
+          <div className="p-6 sm:p-8 text-center" data-testid="booking-coming-soon">
+            <div className="w-16 h-16 bg-[#D97706]/10 rounded-full flex items-center justify-center mx-auto mb-5">
+              <CalendarBlank size={32} weight="duotone" className="text-[#D97706]" />
+            </div>
+            <h3 className="font-oswald text-xl sm:text-2xl uppercase tracking-tight text-white mb-2">
+              Online randevu çok yakında
+            </h3>
+            <p className="font-manrope text-[#A3A3A3] mb-6">
+              Şimdilik randevu için bizi arayabilir ya da WhatsApp'tan yazabilirsiniz.
+            </p>
+
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
+              {phoneHref && (
+                <a
+                  href={phoneHref}
+                  className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-sm bg-[#D97706] hover:bg-[#B45309] text-white font-oswald uppercase tracking-wider transition-colors"
+                  data-testid="booking-call-btn"
+                >
+                  <Phone size={20} weight="fill" />
+                  Ara
+                </a>
+              )}
+              {whatsappHref && (
+                <a
+                  href={whatsappHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-sm border border-[#22c55e]/40 text-[#22c55e] hover:bg-[#22c55e]/10 font-oswald uppercase tracking-wider transition-colors"
+                  data-testid="booking-whatsapp-btn"
+                >
+                  <WhatsappLogo size={20} weight="fill" />
+                  WhatsApp
+                </a>
+              )}
+            </div>
+
+            {contactInfo.phone && (
+              <p className="font-manrope text-sm text-[#A3A3A3] mt-5">{contactInfo.phone}</p>
+            )}
+
+            <Button
+              onClick={closeBooking}
+              variant="ghost"
+              className="mt-4 text-[#A3A3A3] hover:text-white"
+            >
+              Kapat
+            </Button>
+          </div>
+        )}
+
         {/* Content */}
+        {BOOKING_ENABLED && (
         <div className="p-4 sm:p-6 max-h-[60vh] overflow-y-auto">
           <AnimatePresence mode="wait">
             {/* Step 1: Select Service */}
@@ -522,9 +591,10 @@ const BookingModal = ({ services }) => {
             )}
           </AnimatePresence>
         </div>
+        )}
 
         {/* Footer Navigation */}
-        {!bookingComplete && (
+        {BOOKING_ENABLED && !bookingComplete && (
           <div className="border-t border-[#262626] p-4 sm:p-6 flex justify-between">
             <Button
               onClick={prevStep}

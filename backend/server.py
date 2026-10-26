@@ -29,6 +29,10 @@ db = client[os.environ['DB_NAME']]
 # Admin password (simple auth)
 ADMIN_PASSWORD = os.environ.get('ADMIN_PASSWORD', 'berberhane2024')
 
+# Online randevu açık mı? Tanımlı değilse açık kabul edilir.
+# Yayına hazır olana kadar Render'da BOOKING_ENABLED=false yapılır.
+BOOKING_ENABLED = os.environ.get('BOOKING_ENABLED', 'true').strip().lower() != 'false'
+
 # ==================== E-posta Bildirimi (Yeni Randevu) ====================
 GMAIL_ADDRESS = os.environ.get('GMAIL_ADDRESS')
 GMAIL_APP_PASSWORD = os.environ.get('GMAIL_APP_PASSWORD')
@@ -445,6 +449,12 @@ async def get_available_slots(date: str, service_id: str):
 @api_router.post("/appointments", response_model=Appointment)
 async def create_appointment(data: AppointmentCreate):
     """Create a new appointment"""
+    if not BOOKING_ENABLED:
+        raise HTTPException(
+            status_code=503,
+            detail="Online randevu şu anda kapalı. Randevu için lütfen bizi arayın veya WhatsApp'tan yazın."
+        )
+
     # Verify service exists
     service = await db.services.find_one({"id": data.service_id}, {"_id": 0})
     if not service:
