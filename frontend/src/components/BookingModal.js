@@ -319,19 +319,9 @@ const BookingModal = ({ services }) => {
                     }`}
                     data-testid={`booking-service-${service.id}`}
                   >
-                    <div className="flex justify-between items-start">
-                      <div>
-                        <h3 className="font-oswald text-lg text-white uppercase tracking-tight">
-                          {service.name}
-                        </h3>
-                        <p className="text-sm text-[#A3A3A3] mt-1">
-                          {service.duration} dakika
-                        </p>
-                      </div>
-                      <span className="font-oswald text-xl text-[#D97706]">
-                        ₺{service.price}
-                      </span>
-                    </div>
+                    <h3 className="font-oswald text-lg text-white uppercase tracking-tight">
+                      {service.name}
+                    </h3>
                   </button>
                 ))}
               </motion.div>
@@ -526,12 +516,6 @@ const BookingModal = ({ services }) => {
                     <div className="flex justify-between">
                       <span className="text-[#A3A3A3]">Saat:</span>
                       <span className="text-white">{selectedTime}</span>
-                    </div>
-                    <div className="flex justify-between pt-2 border-t border-[#262626]">
-                      <span className="text-[#A3A3A3]">Ücret:</span>
-                      <span className="text-[#D97706] font-oswald text-lg">
-                        ₺{selectedService?.price}
-                      </span>
                     </div>
                   </div>
                 </div>

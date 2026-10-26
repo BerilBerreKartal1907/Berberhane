@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Clock, ArrowRight, CaretDown, CaretUp } from "@phosphor-icons/react";
+import { ArrowRight, CaretDown, CaretUp } from "@phosphor-icons/react";
 import { Button } from "@/components/ui/button";
 import { useBooking } from "@/context/BookingContext";
 
@@ -62,19 +62,12 @@ const ServicesSection = ({ services }) => {
                 <h3 className="font-oswald text-xl sm:text-2xl uppercase tracking-tight text-white mb-2 group-hover:text-[#D97706] transition-colors">
                   {service.name}
                 </h3>
-                <p className="font-manrope text-sm sm:text-base text-[#A3A3A3] mb-2">
+                <p className="font-manrope text-sm sm:text-base text-[#A3A3A3]">
                   {service.description}
                 </p>
-                <div className="flex items-center gap-2 text-[#A3A3A3]">
-                  <Clock size={16} weight="duotone" className="text-[#D97706]" />
-                  <span className="text-sm font-manrope">{service.duration} dakika</span>
-                </div>
               </div>
 
               <div className="flex items-center gap-6 w-full sm:w-auto">
-                <span className="font-oswald text-2xl sm:text-3xl text-white">
-                  ₺{service.price}
-                </span>
                 <Button
                   className="bg-transparent border border-[#262626] text-white hover:bg-[#D97706] hover:border-[#D97706] font-oswald uppercase tracking-wider px-4 py-2 text-sm group-hover:bg-[#D97706] group-hover:border-[#D97706] transition-all"
                   data-testid={`service-book-btn-${service.id}`}
