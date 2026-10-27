@@ -37,9 +37,6 @@ const ServicesSection = ({ services }) => {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <span className="text-xs sm:text-sm font-manrope uppercase tracking-[0.2em] text-[#D97706] mb-4 block">
-            Ne Sunuyoruz
-          </span>
           <h2 className="font-oswald text-4xl sm:text-5xl lg:text-6xl font-bold uppercase tracking-tight text-white">
             Hizmetlerimiz
           </h2>
@@ -59,12 +56,9 @@ const ServicesSection = ({ services }) => {
               data-testid={`service-card-${service.id}`}
             >
               <div className="flex-1">
-                <h3 className="font-oswald text-xl sm:text-2xl uppercase tracking-tight text-white mb-2 group-hover:text-[#D97706] transition-colors">
+                <h3 className="font-oswald text-xl sm:text-2xl uppercase tracking-tight text-white group-hover:text-[#D97706] transition-colors">
                   {service.name}
                 </h3>
-                <p className="font-manrope text-sm sm:text-base text-[#A3A3A3]">
-                  {service.description}
-                </p>
               </div>
 
               <div className="flex items-center gap-6 w-full sm:w-auto">
