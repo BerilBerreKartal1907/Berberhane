@@ -12,9 +12,9 @@ const HeroSection = () => {
           className="absolute inset-0 bg-cover bg-no-repeat"
           style={{
             backgroundImage: `url('/hero-bg.jpg')`,
-            // Neon tabela yatayda ortada, dikeyde üst kısımda duruyor;
-            // telefonda dikey ekranda kırpılırken tabela görünür kalsın diye
-            backgroundPosition: "52% 35%",
+            // Görsel, neon tabela tam ortada olacak şekilde kırpıldı;
+            // dikeyde tabela üst kısımda kalsın diye
+            backgroundPosition: "50% 35%",
           }}
         />
 

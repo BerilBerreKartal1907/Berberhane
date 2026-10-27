@@ -43,7 +43,7 @@ const Header = ({ settings }) => {
           {/* Logo */}
           <Link
             to="/"
-            className="font-oswald text-2xl sm:text-3xl font-bold tracking-tight text-white"
+            className="font-oswald text-3xl sm:text-4xl font-bold tracking-tight text-white"
             data-testid="logo"
           >
             BERBERHANE
