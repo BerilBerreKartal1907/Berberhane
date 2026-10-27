@@ -19,9 +19,6 @@ const ContactSection = ({ settings }) => {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <span className="text-xs sm:text-sm font-manrope uppercase tracking-[0.2em] text-[#D97706] mb-4 block">
-            Bize Ulaşın
-          </span>
           <h2 className="font-oswald text-4xl sm:text-5xl lg:text-6xl font-bold uppercase tracking-tight text-white">
             İletişim
           </h2>

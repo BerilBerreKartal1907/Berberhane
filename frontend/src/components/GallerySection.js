@@ -2,8 +2,8 @@ import { motion } from "framer-motion";
 
 const galleryImages = [
   { src: "/gallery/berberhane-2.jpg", alt: "Berberhane saç kesimi" },
-  { src: "/gallery/berberhane-5.jpg", alt: "Berberhane neon tabela" },
-  { src: "/gallery/berberhane-1.jpg", alt: "Berberhane iç mekan" },
+  { src: "/gallery/berberhane-5.jpg", alt: "Berberhane iç mekan" },
+  { src: "/gallery/berberhane-1.jpg", alt: "Berberhane neon tabela" },
   { src: "/gallery/berberhane-4.jpg", alt: "Berberhane dükkan girişi" },
   { src: "/gallery/berberhane-3.jpg", alt: "Berberhane çalışma alanı" },
   { src: "/gallery/berberhane-6.jpg", alt: "Berberhane saç kesimi 2" },
@@ -25,9 +25,6 @@ const GallerySection = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <span className="text-xs sm:text-sm font-manrope uppercase tracking-[0.2em] text-[#D97706] mb-4 block">
-            Çalışmalarımız
-          </span>
           <h2 className="font-oswald text-4xl sm:text-5xl lg:text-6xl font-bold uppercase tracking-tight text-white">
             Galeri
           </h2>
