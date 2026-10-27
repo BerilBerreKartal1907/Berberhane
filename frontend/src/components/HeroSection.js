@@ -13,8 +13,8 @@ const HeroSection = () => {
           style={{
             backgroundImage: `url('/hero-bg.jpg')`,
             // Görsel, neon tabela tam ortada olacak şekilde kırpıldı;
-            // dikeyde tabela üst kısımda kalsın diye
-            backgroundPosition: "50% 35%",
+            // dikeyde tabela menünün altında, tam görünür kalsın diye
+            backgroundPosition: "50% 15%",
           }}
         />
 
@@ -39,7 +39,7 @@ const HeroSection = () => {
           className="max-w-4xl mx-auto text-center"
         >
           <div className="w-12 h-[2px] bg-[#D97706] mx-auto mb-8" />
-          <p className="font-oswald text-4xl sm:text-6xl lg:text-7xl font-bold uppercase tracking-tight leading-[1.05] text-white">
+          <p className="font-oswald text-3xl sm:text-4xl lg:text-5xl font-bold uppercase tracking-tight leading-[1.05] text-white">
             Bir kere gelen,
             <br />
             <span className="text-[#D97706]">bir daha gelir.</span>
